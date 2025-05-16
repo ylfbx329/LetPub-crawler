@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}OA处理费 vs JCI{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div id="apc-jci-chart" style="width: 100%; height: 600px;"></div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5"></script>
+    <script>
+        const points = {{ chart_data | safe }};
+
+        const chart = echarts.init(document.getElementById('apc-jci-chart'));
+        const option = {
+            title: {
+                text: 'OA期刊处理费 vs JCI指标',
+                left: 'center'
+            },
+            grid: {
+                left: 60,
+                right: 80,
+                bottom: 60,
+                top: 60
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: p => `${p.data.name}<br/>APC: $${p.data.value[0]}<br/>JCI: ${p.data.value[1]}`
+            },
+            xAxis: {
+                name: 'OA处理费 (USD)',
+                type: 'value',
+                nameLocation: 'center',   // 坐标轴名称在中间
+                nameGap: 30,              // 距离坐标轴的距离（单位：像素）
+            },
+            yAxis: {
+                name: 'JCI 引文指标',
+                type: 'value'
+            },
+            series: [{
+                name: '期刊',
+                type: 'scatter',
+                symbolSize: 10,
+                data: points.map(p => ({value: [p.x, p.y], name: p.name})),
+                markLine: {
+                    data: [
+                        {
+                            yAxis: 1,
+                            name: 'JCI = 1',
+                            lineStyle: {
+                                type: 'dashed',
+                                color: '#ff6f61'
+                            },
+                            label: {
+                                formatter: 'JCI = 1',
+                                color: '#ff6f61'
+                            }
+                        }
+                    ]
+                }
+            }]
+        };
+
+        chart.setOption(option);
+    </script>
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+
+{% block title %}期刊可视化系统{% endblock %}
+
+{% block content %}
+    <section class="content mt-4">
+        <div class="container-fluid">
+
+            <!-- 页面标题 -->
+            <div class="text-center mb-4">
+                <h2 class="text-dark fw-bold">
+                    <i class="fas fa-table me-2"></i>期刊信息总览
+                </h2>
+                <p class="text-muted">可筛选、排序、分页的交互式期刊数据表格</p>
+            </div>
+
+            <!-- 表格卡片 -->
+            <div class="card shadow-sm rounded">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h5 class="card-title mb-0"><i class="fas fa-database me-2"></i>
+                        <span>期刊数据表</span>
+                    </h5>
+                </div>
+                <div class="card-body px-3 pt-3 pb-4">
+                    <div id="journalTable"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 返回顶部按钮 -->
+    <a id="back-to-top" href="#" class="btn btn-primary back-to-top rounded-circle shadow" role="button" aria-label="返回顶部" style="right: 30px; bottom: 30px;">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+{% endblock %}
+
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        const tableData = {{ journals | tojson }};
+
+        new Tabulator("#journalTable", {
+            layout: "fitDataStretch", // 自动列宽
+            data: tableData,
+            pagination: "local",
+            paginationSize: 20,
+            responsiveLayout: "collapse",
+            movableColumns: true,
+            initialSort: [{column: "impact_factor", dir: "desc"}],
+            columns: [
+                {title: "名称", field: "name", widthGrow: 2, headerFilter: "input", headerFilterPlaceholder: "搜索名称"},
+                {
+                    title: "影响因子", field: "impact_factor", hozAlign: "right", headerFilter: "input", headerFilterPlaceholder: "大于...",
+                    headerFilterFunc: function (cellValue, filterValue) {
+                        const val = parseFloat(filterValue);
+                        return isNaN(val) ? true : parseFloat(cellValue) <= val;
+                    }
+                },
+                {
+                    title: "SCI分区", field: "sci_part", headerFilter: "select", headerFilterParams: {
+                        values: {
+                            "": "全部",
+                            "1区": "1区",
+                            "2区": "2区",
+                            "3区": "3区",
+                            "4区": "4区",
+                            "/": "无"
+                        }
+                    }
+                },
+                {
+                    title: "是否OA", field: "open_access",
+                    formatter: cell => cell.getValue() ? "是" : "否",
+                    headerFilter: "select",
+                    headerFilterParams: {
+                        values: {
+                            "": "全部",
+                            "是": "是",
+                            "否": "否"
+                        }
+                    }
+                },
+                {
+                    title: "国家",
+                    field: "country_trans",
+                    headerFilter: "input",
+                    headerFilterPlaceholder: "搜索国家"
+                },
+                {
+                    title: "出版社",
+                    field: "publisher",
+                    headerFilter: "input",
+                    headerFilterPlaceholder: "搜索出版社"
+                },
+                {
+                    title: "详情页",
+                    field: "id",
+                    formatter: function (cell) {
+                        const jid = cell.getValue();
+                        return `<a href="/detail/journal/${jid}">查看</a>`;
+                    },
+                    headerSort: false
+                },
+                {
+                    title: "LetPub",
+                    field: "letpub_link",
+                    formatter: function (cell) {
+                        const url = cell.getValue();
+                        return `<a href="${url}" target="_blank">LetPub</a>`;
+                    },
+                    headerSort: false
+                }
+            ]
+
+        });
+    </script>
+
+{% endblock %}

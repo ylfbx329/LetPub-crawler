@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}审稿速度与录用率{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <div id="reviewAcceptChart" style="width: 100%; height: 600px;"></div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5"></script>
+    <script>
+        const data = {{ chart_data | safe }};
+        const chartDom = document.getElementById('reviewAcceptChart');
+        const myChart = echarts.init(chartDom);
+
+        const option = {
+            title: {
+                text: '期刊审稿速度 vs 录用率',
+                left: 'left'
+            },
+            tooltip: {trigger: 'axis'},
+            legend: {data: ['平均审稿速度 (天)', '平均录用比例 (%)']},
+            dataZoom: [
+                {type: 'slider', xAxisIndex: 0, start: 0, end: 50},
+                {type: 'inside', xAxisIndex: 0, start: 0, end: 50}
+            ],
+            xAxis: {
+                type: 'category',
+                data: data.name,
+                axisLabel: {rotate: 45, fontSize: 10}
+            },
+            yAxis: [
+                {type: 'value', name: '审稿速度 (天)', position: 'left'},
+                {type: 'value', name: '录用比例 (%)', position: 'right', axisLine: {lineStyle: {color: '#5470c6'}}}
+            ],
+            series: [
+                {name: '平均审稿速度 (天)', type: 'bar', data: data.speed, yAxisIndex: 0},
+                {name: '平均录用比例 (%)', type: 'bar', data: data.accept, yAxisIndex: 1}
+            ]
+        };
+
+        myChart.setOption(option);
+    </script>
+{% endblock %}

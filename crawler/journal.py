@@ -1,0 +1,89 @@
+class Journal:
+    def __init__(self, id=-1, letpub_link='', name='', shortname='',
+                 letpub_score='',
+                 score_people='',
+                 reputation_score='',
+                 influence_score='',
+                 speed_score='',
+                 intro='',
+                 cite_score='',
+                 sjr='',
+                 snip='',
+                 language_require='',
+                 sci_part='',
+                 jif_sci_rank='',
+                 jci_sci_rank='',
+                 warning='',
+                 ch_sci_2025='',
+                 ch_sci_2023='',
+                 ch_sci_2022='',
+                 sci='',
+                 scopus='',
+                 speed='',
+                 accept='',
+                 oa_price='',
+                 apc_price='',
+                 range='',
+                 type='',
+                 editor='',
+                 impact_factor='', real_time_if=0.0, self_cite_rate='', five_year_if=0.0, jci=0.0, h_index=0,
+                 submission_url='', website='', guidelines_url='',
+                 e_issn='', issn='', open_access=False, publisher='', country='',
+                 language='', start_year='',
+                 communication='', field='', period='', year_paper=0, gold_oa='', research_ratio='',
+                 pmc_url='', p_issn=''):
+        self.id = id
+        self.letpub_link = letpub_link
+        self.name = name
+        self.shortname = shortname
+        self.letpub_score = letpub_score
+        self.score_people = score_people
+        self.reputation_score = reputation_score
+        self.influence_score = influence_score
+        self.speed_score = speed_score
+        self.issn = issn
+        self.p_issn = p_issn
+        self.e_issn = e_issn
+        self.impact_factor = impact_factor
+        self.real_time_if = real_time_if
+        self.self_cite_rate = self_cite_rate
+        self.five_year_if = five_year_if
+        self.jci = jci
+        self.h_index = h_index
+        self.cite_score = cite_score
+        self.sjr = sjr
+        self.snip = snip
+        self.cite_score_rank = []
+        self.intro = intro
+        self.website = website
+        self.submission_url = submission_url
+        self.guidelines_url = guidelines_url
+        self.language_require = language_require
+        self.open_access = open_access
+        self.oa_price = oa_price
+        self.communication = communication
+        self.publisher = publisher
+        self.field = field
+        self.country = country
+        self.language = language
+        self.period = period
+        self.start_year = start_year
+        self.year_paper = year_paper
+        self.gold_oa = gold_oa
+        self.research_ratio = research_ratio
+        self.sci_part = sci_part
+        self.jif_sci_rank = jif_sci_rank
+        self.jci_sci_rank = jci_sci_rank
+        self.warning = warning
+        self.ch_sci_2025 = ch_sci_2025
+        self.ch_sci_2023 = ch_sci_2023
+        self.ch_sci_2022 = ch_sci_2022
+        self.sci = sci
+        self.scopus = scopus
+        self.pmc_url = pmc_url
+        self.speed = speed
+        self.accept = accept
+        self.apc_price = apc_price
+        self.range = range
+        self.type = type
+        self.editor = editor
